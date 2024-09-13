@@ -1,4 +1,5 @@
 import Header from "./app/components/Header"
+import Footer from "./app/components/Footer"
 
 function App() {
   return (
@@ -6,8 +7,10 @@ function App() {
     /* Fragmento */
     <div className="wrapper"> 
 
-      <Header/>
-
+      <Header />
+      <main></main>
+      <Footer />
+      
     </div>
   )
 }
