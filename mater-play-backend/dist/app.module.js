@@ -10,6 +10,9 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
+const movie_entity_1 = require("./entities/movie-entity");
+const movie_controller_1 = require("./controllers/movie-controller");
+const movie_service_1 = require("./services/movie-service");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -26,12 +29,13 @@ exports.AppModule = AppModule = __decorate([
                 database: process.env.DB_NAME,
                 username: process.env.DB_USER,
                 password: process.env.DB_PASS,
-                entities: [],
+                entities: [movie_entity_1.Movie],
                 synchronize: true
-            })
+            }),
+            typeorm_1.TypeOrmModule.forFeature([movie_entity_1.Movie]),
         ],
-        controllers: [],
-        providers: [],
+        controllers: [movie_controller_1.MovieController],
+        providers: [movie_service_1.MovieService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
