@@ -22,8 +22,12 @@ let MovieController = class MovieController {
     findAll() {
         return this.service.findAll();
     }
-    findById(id) {
-        return this.service.findById(id);
+    async findById(id) {
+        const found = await this.service.findById(id);
+        if (!found) {
+            throw new common_1.HttpException("Movie not found", common_1.HttpStatus.NOT_FOUND);
+        }
+        return found;
     }
 };
 exports.MovieController = MovieController;
@@ -35,7 +39,7 @@ __decorate([
 ], MovieController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(":id"),
-    __param(0, (0, common_1.Param)("id")),
+    __param(0, (0, common_1.Param)("id", new common_1.ParseUUIDPipe())),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
