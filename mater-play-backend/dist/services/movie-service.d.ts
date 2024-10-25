@@ -5,4 +5,6 @@ export declare class MovieService {
     constructor(repository: Repository<Movie>);
     findAll(): Promise<Movie[]>;
     findById(id: string): Promise<Movie>;
+    save(movie: Movie): Promise<Movie>;
+    remove(id: string): Promise<void>;
 }

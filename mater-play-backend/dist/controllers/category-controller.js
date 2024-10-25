@@ -12,11 +12,11 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MovieController = void 0;
+exports.CategoryController = void 0;
 const common_1 = require("@nestjs/common");
-const movie_entity_1 = require("../entities/movie-entity");
-const movie_service_1 = require("../services/movie-service");
-let MovieController = class MovieController {
+const category_entity_1 = require("../entities/category-entity");
+const category_service_1 = require("../services/category-service");
+let CategoryController = class CategoryController {
     constructor(service) {
         this.service = service;
     }
@@ -26,7 +26,7 @@ let MovieController = class MovieController {
     async findById(id) {
         const found = await this.service.findById(id);
         if (!found) {
-            throw new common_1.HttpException("Movie not found", common_1.HttpStatus.NOT_FOUND);
+            throw new common_1.HttpException("Category not found", common_1.HttpStatus.NOT_FOUND);
         }
         return found;
     }
@@ -36,7 +36,7 @@ let MovieController = class MovieController {
     async update(id, category) {
         const found = await this.service.findById(id);
         if (!found) {
-            throw new common_1.HttpException("Movie not found", common_1.HttpStatus.NOT_FOUND);
+            throw new common_1.HttpException("Category not found", common_1.HttpStatus.NOT_FOUND);
         }
         category.id = found.id;
         return this.service.save(category);
@@ -44,49 +44,50 @@ let MovieController = class MovieController {
     async remove(id) {
         const found = await this.service.findById(id);
         if (!found) {
-            throw new common_1.HttpException("Movie not found", common_1.HttpStatus.NOT_FOUND);
+            throw new common_1.HttpException("Category not found", common_1.HttpStatus.NOT_FOUND);
         }
         return this.service.remove(id);
     }
 };
-exports.MovieController = MovieController;
+exports.CategoryController = CategoryController;
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], MovieController.prototype, "findAll", null);
+], CategoryController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(":id"),
-    __param(0, (0, common_1.Param)("id", new common_1.ParseUUIDPipe())),
+    __param(0, (0, common_1.Param)("id", new common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
-], MovieController.prototype, "findById", null);
+], CategoryController.prototype, "findById", null);
 __decorate([
+    (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [movie_entity_1.Movie]),
+    __metadata("design:paramtypes", [category_entity_1.Category]),
     __metadata("design:returntype", Promise)
-], MovieController.prototype, "create", null);
+], CategoryController.prototype, "create", null);
 __decorate([
     (0, common_1.Put)(":id"),
-    __param(0, (0, common_1.Param)("id", common_1.ParseUUIDPipe)),
+    __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, movie_entity_1.Movie]),
+    __metadata("design:paramtypes", [Number, category_entity_1.Category]),
     __metadata("design:returntype", Promise)
-], MovieController.prototype, "update", null);
+], CategoryController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(":id"),
     (0, common_1.HttpCode)(204),
-    __param(0, (0, common_1.Param)("id", common_1.ParseUUIDPipe)),
+    __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
-], MovieController.prototype, "remove", null);
-exports.MovieController = MovieController = __decorate([
-    (0, common_1.Controller)("movies"),
-    __metadata("design:paramtypes", [movie_service_1.MovieService])
-], MovieController);
-//# sourceMappingURL=movie-controller.js.map
+], CategoryController.prototype, "remove", null);
+exports.CategoryController = CategoryController = __decorate([
+    (0, common_1.Controller)("categories"),
+    __metadata("design:paramtypes", [category_service_1.CategoryService])
+], CategoryController);
+//# sourceMappingURL=category-controller.js.map

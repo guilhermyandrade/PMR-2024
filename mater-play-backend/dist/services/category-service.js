@@ -12,32 +12,32 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MovieService = void 0;
+exports.CategoryService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const movie_entity_1 = require("../entities/movie-entity");
+const category_entity_1 = require("../entities/category-entity");
 const typeorm_2 = require("typeorm");
-let MovieService = class MovieService {
+let CategoryService = class CategoryService {
     constructor(repository) {
         this.repository = repository;
     }
     findAll() {
-        return this.repository.find({});
+        return this.repository.find();
     }
     findById(id) {
         return this.repository.findOneBy({ id: id });
     }
-    save(movie) {
-        return this.repository.save(movie);
+    save(category) {
+        return this.repository.save(category);
     }
     async remove(id) {
         await this.repository.delete(id);
     }
 };
-exports.MovieService = MovieService;
-exports.MovieService = MovieService = __decorate([
+exports.CategoryService = CategoryService;
+exports.CategoryService = CategoryService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_1.InjectRepository)(movie_entity_1.Movie)),
+    __param(0, (0, typeorm_1.InjectRepository)(category_entity_1.Category)),
     __metadata("design:paramtypes", [typeorm_2.Repository])
-], MovieService);
-//# sourceMappingURL=movie-service.js.map
+], CategoryService);
+//# sourceMappingURL=category-service.js.map
