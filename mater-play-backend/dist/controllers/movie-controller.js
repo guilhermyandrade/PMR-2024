@@ -20,7 +20,12 @@ let MovieController = class MovieController {
     constructor(service) {
         this.service = service;
     }
-    findAll() {
+    findAll(categoryId) {
+        if (categoryId) {
+            return this.service.findByCategory({
+                id: Number(categoryId)
+            });
+        }
         return this.service.findAll();
     }
     async findById(id) {
@@ -30,16 +35,16 @@ let MovieController = class MovieController {
         }
         return found;
     }
-    create(category) {
-        return this.service.save(category);
+    create(movie) {
+        return this.service.save(movie);
     }
-    async update(id, category) {
+    async update(id, movie) {
         const found = await this.service.findById(id);
         if (!found) {
             throw new common_1.HttpException("Movie not found", common_1.HttpStatus.NOT_FOUND);
         }
-        category.id = found.id;
-        return this.service.save(category);
+        movie.id = found.id;
+        return this.service.save(movie);
     }
     async remove(id) {
         const found = await this.service.findById(id);
@@ -52,8 +57,9 @@ let MovieController = class MovieController {
 exports.MovieController = MovieController;
 __decorate([
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)("categoryId")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], MovieController.prototype, "findAll", null);
 __decorate([

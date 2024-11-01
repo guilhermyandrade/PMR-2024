@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Movie = void 0;
 const typeorm_1 = require("typeorm");
+const category_entity_1 = require("./category-entity");
 let Movie = class Movie {
 };
 exports.Movie = Movie;
@@ -34,6 +35,13 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: false }),
     __metadata("design:type", String)
 ], Movie.prototype, "poster", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => category_entity_1.Category, { eager: true }),
+    (0, typeorm_1.JoinTable)({
+        name: "movie_category"
+    }),
+    __metadata("design:type", Array)
+], Movie.prototype, "categories", void 0);
 exports.Movie = Movie = __decorate([
     (0, typeorm_1.Entity)("movie")
 ], Movie);

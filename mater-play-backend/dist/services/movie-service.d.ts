@@ -1,3 +1,4 @@
+import { Category } from "src/entities/category-entity";
 import { Movie } from "src/entities/movie-entity";
 import { Repository } from "typeorm";
 export declare class MovieService {
@@ -5,6 +6,7 @@ export declare class MovieService {
     constructor(repository: Repository<Movie>);
     findAll(): Promise<Movie[]>;
     findById(id: string): Promise<Movie>;
+    findByCategory(category: Category): Promise<Movie[]>;
     save(movie: Movie): Promise<Movie>;
     remove(id: string): Promise<void>;
 }

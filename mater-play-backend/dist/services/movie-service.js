@@ -27,6 +27,15 @@ let MovieService = class MovieService {
     findById(id) {
         return this.repository.findOneBy({ id: id });
     }
+    findByCategory(category) {
+        return this.repository.find({
+            where: {
+                categories: {
+                    id: category.id
+                }
+            }
+        });
+    }
     save(movie) {
         return this.repository.save(movie);
     }
