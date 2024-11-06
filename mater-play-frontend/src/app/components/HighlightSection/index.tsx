@@ -1,10 +1,30 @@
 import { Box, Container, Stack, Typography, Button } from "@mui/material"
+import {useEffect, useState} from "react"
+import { useParams } from "react-router-dom"
+import { MoviesService } from "../../services/movies-service"
+import { IMovie } from "../../@libs/types"
 
 //type HightLightProps = {
 //    poster: string
 //}
 
 function HightLightSection() {
+
+    const params = useParams();
+    const [movie, setMovie] = useState<IMovie>({} as IMovie);
+
+    useEffect(() => {
+        
+        const movieId = (params.id) ? (params.id) : '';
+
+        MoviesService.getMoviesById(movieId)
+        .then(result => {
+            if (result) setMovie(result)
+        })
+        .catch(error => { console.log(error) })
+
+
+    }, [params]);
 
     return (
 
@@ -15,7 +35,7 @@ function HightLightSection() {
                     direction="row"
                 >
 
-                    <img src="assets/house-of-dragons-poster.jpg"/>
+                    <img src={`assets/${movie.poster}`}/>
 
 
                 <Stack
@@ -29,7 +49,7 @@ function HightLightSection() {
                     <Typography
                             variant="h4"
                         >
-                            A Casa do Dragão
+                            {movie.title}
                         </Typography>
 
                         <Typography 
@@ -43,7 +63,7 @@ function HightLightSection() {
                                     marginRight: "0.3rem"
                                 }}
                             >
-                                16
+                                {movie.ageRating}
                             </span>
                             Aventura, Fantasia, Ação
                         </Typography>
@@ -55,7 +75,7 @@ function HightLightSection() {
                                 marginBottom: "0.5rem"
                             }}
                         >
-                            Sinopse
+                            {movie.description}
                         </Typography>
 
                         <Typography  // Texto da Sinopse
