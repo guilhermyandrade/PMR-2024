@@ -11,10 +11,10 @@ export class MovieController {
 
     @Get()
 
-    findAll( @Query("categoryId") categoryId?: string): Promise<Movie[]> {
-        if (categoryId) {
+    findAll( @Query("movieId") movieId?: string): Promise<Movie[]> {
+        if (movieId) {
             return this.service.findByCategory({
-                id: Number(categoryId)
+                id: Number(movieId)
             } as Category)
         }
         
@@ -44,7 +44,11 @@ export class MovieController {
         @Body() movie: Movie
     ): Promise<Movie> {
         
+        console.log(id)
+
         const found = await this.service.findById(id)
+        
+        //console.log(found)
 
         if ( !found ) { 
             throw new HttpException("Movie not found", HttpStatus.NOT_FOUND)

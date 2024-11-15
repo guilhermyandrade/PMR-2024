@@ -65,7 +65,9 @@ function HightLightSection() {
                             >
                                 {movie.ageRating}
                             </span>
-                            Aventura, Fantasia, Ação
+                            
+                            {movie.genres && movie.genres.map(genre => (genre.name)).join(", ")}
+
                         </Typography>
 
                         <Typography  // Título da Sinopse

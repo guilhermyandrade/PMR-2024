@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ICategory } from "../../@libs/types";
 import { CategoryService } from "../../services/category-service";
+import { HightLightSection } from "../../components/HighlightSection";
 
 function HomePage() {
 
@@ -21,16 +22,14 @@ function HomePage() {
 
 
     return (
-        <main
-            style={{
-                marginTop: "8rem"
-            }}
-        >
+        <main style={{marginTop: "8rem"}} >
+
             <HighLightSection />
+        
             {
-            categories.map(item => (
-                <Section key={item.id} category={item}/>
-            ))
+                categories.map(item => (
+                    <Section key={item.id} category={item}/>
+                ))
             }
         </main>
     )

@@ -10,12 +10,9 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
-const movie_entity_1 = require("./entities/movie-entity");
-const movie_controller_1 = require("./controllers/movie-controller");
-const movie_service_1 = require("./services/movie-service");
-const category_entity_1 = require("./entities/category-entity");
-const category_controller_1 = require("./controllers/category-controller");
-const category_service_1 = require("./services/category-service");
+const category_module_1 = require("./categories/category-module");
+const genre_module_1 = require("./genres/genre-module");
+const movie_module_1 = require("./movies/movie-module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -32,13 +29,13 @@ exports.AppModule = AppModule = __decorate([
                 database: process.env.DB_NAME,
                 username: process.env.DB_USER,
                 password: process.env.DB_PASS,
-                entities: [category_entity_1.Category, movie_entity_1.Movie],
+                autoLoadEntities: true,
                 synchronize: true
             }),
-            typeorm_1.TypeOrmModule.forFeature([category_entity_1.Category, movie_entity_1.Movie]),
-        ],
-        controllers: [category_controller_1.CategoryController, movie_controller_1.MovieController],
-        providers: [category_service_1.CategoryService, movie_service_1.MovieService],
+            category_module_1.CategoryModule,
+            movie_module_1.MovieModule,
+            genre_module_1.GenreModule,
+        ]
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
