@@ -1,69 +1,66 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, ParseUUIDPipe, Post, Put } from "@nestjs/common";
-import { Genre } from "src/genres/genre-entity";
-import { GenreService } from "src/genres/genre-service";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { GenreService } from './genre-service';
+import { Genre } from './genre-entity';
 
-@Controller("genres")
+@Controller('/genres')
 export class GenreController {
-    constructor(
-        private service: GenreService
-    ) {}
+  constructor(private service: GenreService) {}
 
-    @Get()
+  @Get()
+  findAll(): Promise<Genre[]> {
+    return this.service.findAll();
+  }
 
+  @Get(':id')
+  async findById(@Param('id', ParseUUIDPipe) id: string): Promise<Genre> {
+    const found = await this.service.findById(id);
 
-    findAll(): Promise<Genre[]> {
-        return this.service.findAll()
-    }
+    if (!found)
+      throw new HttpException('Genre not found', HttpStatus.NOT_FOUND);
 
-    @Get(":id")
+    return found;
+  }
 
-    async findById(@Param("id", new ParseUUIDPipe) id: string): Promise<Genre> {
+  @Post()
+  create(@Body() genre: Genre): Promise<Genre> {
+    return this.service.save(genre);
+  }
 
-        const found = await this.service.findById(id)
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() genre: Genre,
+  ): Promise<Genre> {
+    const found = await this.service.findById(id);
 
-        if ( !found ) { 
-            throw new HttpException("Genre not found", HttpStatus.NOT_FOUND)
-        }
+    if (!found)
+      throw new HttpException('Genre not found', HttpStatus.NOT_FOUND);
 
-        return found
-    }
+    genre.id = found.id;
 
-    @Post()
-    create(@Body() genre: Genre): Promise<Genre> {
-        return this.service.save(genre)
-    }
+    return this.service.save(genre);
+  }
 
-    @Put(":id")
-    async update( 
-        @Param("id", ParseUUIDPipe) id: string, 
-        @Body() genre: Genre
-    ): Promise<Genre> {
-        
-        const found = await this.service.findById(id)
+  @Delete(':id')
+  @HttpCode(204)
+  async remove(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
+    const found = await this.service.findById(id);
 
-        if ( !found ) { 
-            throw new HttpException("Genre not found", HttpStatus.NOT_FOUND)
-        }
+    if (!found)
+      throw new HttpException('Genre not found', HttpStatus.NOT_FOUND);
 
-        genre.id = found.id
-
-        return this.service.save(genre)
-    }
-
-
-    @Delete(":id")
-    @HttpCode(204)
-    async remove(
-        @Param("id", ParseUUIDPipe) id: string
-    
-    ): Promise<void> {
-        const found = await this.service.findById(id)
-
-        if ( !found ) { 
-            throw new HttpException("Genre not found", HttpStatus.NOT_FOUND)
-        }
-
-        return this.service.remove(id)
-    }
-
+    return this.service.remove(id);
+  }
 }

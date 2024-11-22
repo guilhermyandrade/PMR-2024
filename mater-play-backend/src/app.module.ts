@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
 import { CategoryModule } from './categories/category-module';
-import { GenreModule } from './genres/genre-module';
 import { MovieModule } from './movies/movie-module';
+import { GenreModule } from './genres/genre-module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -18,12 +17,12 @@ import { MovieModule } from './movies/movie-module';
       database: process.env.DB_NAME,
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
+      synchronize: true,
       autoLoadEntities: true,
-      synchronize: true
     }),
     CategoryModule,
-    MovieModule,
     GenreModule,
-  ]
+    MovieModule,
+  ],
 })
 export class AppModule {}

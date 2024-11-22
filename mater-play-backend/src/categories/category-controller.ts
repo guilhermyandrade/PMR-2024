@@ -1,68 +1,69 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
-import { Category } from "src/categories/category-entity";
-import { CategoryService } from "src/categories/category-service";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { Category } from 'src/categories/category-entity';
+import { CategoryService } from 'src/categories/category-service';
 
-@Controller("categories")
+@Controller('categories')
 export class CategoryController {
-    constructor(
-        private service: CategoryService
-    ) {}
+  constructor(private service: CategoryService) {}
 
-    @Get()
+  @Get()
+  findAll(): Promise<Category[]> {
+    return this.service.findAll();
+  }
 
-    findAll(): Promise<Category[]> {
-        return this.service.findAll()
+  @Get(':id')
+  async findById(@Param('id', ParseIntPipe) id: number): Promise<Category> {
+    const found = await this.service.findById(id);
+
+    if (!found) {
+      throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
     }
 
-    @Get(":id")
+    return found;
+  }
 
-    async findById(@Param("id", new ParseIntPipe) id: number): Promise<Category> {
+  @Post()
+  create(@Body() category: Category): Promise<Category> {
+    return this.service.save(category);
+  }
 
-        const found = await this.service.findById(id)
+  @Put(':id')
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() category: Category,
+  ): Promise<Category> {
+    const found = await this.service.findById(id);
 
-        if ( !found ) { 
-            throw new HttpException("Category not found", HttpStatus.NOT_FOUND)
-        }
-
-        return found
+    if (!found) {
+      throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
     }
 
-    @Post()
-    create(@Body() category: Category): Promise<Category> {
-        return this.service.save(category)
+    category.id = found.id;
+
+    return this.service.save(category);
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    const found = await this.service.findById(id);
+
+    if (!found) {
+      throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
     }
 
-    @Put(":id")
-    async update( 
-        @Param("id", ParseIntPipe) id: number, 
-        @Body() category: Category
-    ): Promise<Category> {
-        
-        const found = await this.service.findById(id)
-
-        if ( !found ) { 
-            throw new HttpException("Category not found", HttpStatus.NOT_FOUND)
-        }
-
-        category.id = found.id
-
-        return this.service.save(category)
-    }
-
-
-    @Delete(":id")
-    @HttpCode(204)
-    async remove(
-        @Param("id", ParseIntPipe) id: number
-    
-    ): Promise<void> {
-        const found = await this.service.findById(id)
-
-        if ( !found ) { 
-            throw new HttpException("Category not found", HttpStatus.NOT_FOUND)
-        }
-
-        return this.service.remove(id)
-    }
-
+    return this.service.remove(id);
+  }
 }
